@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+
+  mysql:
+    image: mysql:8.0.32
+    container_name: pedido-db
+    ports:
+      - "3306:3306"
+    volumes:
+      - pedido-db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: pedido-db
+      MYSQL_ROOT_PASSWORD: ifljava
+    networks:
+      - gestao-mercados-microsservices-bridge
+
+  pedido-ms:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: luizmiguelvb/pedido-ms
+    container_name: pedido-ms
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    environment:
+      - ADDITIONAL_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+      - PROFILE=dev
+    networks:
+      - gestao-mercados-microsservices-bridge
+    depends_on:
+      - mysql
+
+networks:
+  gestao-mercados-microsservices-bridge:
+    name: "gestao-mercados-microsservices-bridge"
+    driver: bridge
+    external: true
+volumes:
+  pedido-db:

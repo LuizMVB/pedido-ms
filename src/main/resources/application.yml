@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: pedido-ms
+  devtools:
+    remote:
+      secret: 'D&vo&&iFBkKPD5IqwU7,ix{#iC7qC1RrE3y$6dip;GI}sBr9[Aw"52E9M@v!<(4'
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://pedido-db:3306/pedido-db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: root
+    password: ifljava
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://servidor:8081/eureka
+
+server:
+  port: 0
