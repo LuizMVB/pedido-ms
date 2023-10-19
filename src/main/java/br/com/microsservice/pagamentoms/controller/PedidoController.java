@@ -28,9 +28,4 @@ public class PedidoController {
         return cadastroPedidoService.detalhar(id);
     }
 
-    @PatchMapping(value = "/pedido")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void modificar(@RequestBody List<PedidoDTO> pedidoDTOList) {
-        cadastroPedidoService.modificar(pedidoDTOList);
-    }
 }

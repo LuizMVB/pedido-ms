@@ -14,6 +14,11 @@ spring:
     url: jdbc:mysql://pedido-db:3306/pedido-db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
     username: root
     password: ifljava
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: luiz
+    password: ifljava
 
 eureka:
   client:

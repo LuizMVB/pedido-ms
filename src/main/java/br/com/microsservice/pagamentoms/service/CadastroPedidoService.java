@@ -1,11 +1,12 @@
 package br.com.microsservice.pagamentoms.service;
 
+import br.com.microsservice.pagamentoms.domain.StatusPedidoEnum;
 import br.com.microsservice.pagamentoms.domain.entity.Item;
 import br.com.microsservice.pagamentoms.domain.entity.Pedido;
 import br.com.microsservice.pagamentoms.dto.ItemDTO;
+import br.com.microsservice.pagamentoms.dto.PagamentoDTO;
 import br.com.microsservice.pagamentoms.dto.PedidoDTO;
 import br.com.microsservice.pagamentoms.repository.PedidoRepository;
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,11 @@ public class CadastroPedidoService {
     public PedidoDTO detalhar(Long id) {
         var pedido = pedidoRepository
                 .findById(id)
-                .orElseThrow(EntityExistsException::new);
+                .orElseThrow(EntityNotFoundException::new);
         return modelMapper.map(pedido, PedidoDTO.class);
     }
 
-    public void modificar(List<PedidoDTO> pedidoDTOList) {
+    private void modificar(List<PedidoDTO> pedidoDTOList) {
         var pedidoIdList = pedidoDTOList
                 .stream()
                 .map(PedidoDTO::getId)
@@ -67,5 +68,18 @@ public class CadastroPedidoService {
 
             modelMapper.map(pedidoToBeCorrespondente, pedido);
         });
+    }
+
+    public void pagarPedidos(List<PagamentoDTO> pagamentoDTOList) {
+        List<PedidoDTO> pedidoDTOList = pagamentoDTOList
+                .stream()
+                .map(pagamentoDTO -> {
+                    var pedidoDTO = new PedidoDTO();
+                    pedidoDTO.setId(pagamentoDTO.getIdPedido());
+                    pedidoDTO.setStatus(StatusPedidoEnum.PAGO);
+                    return pedidoDTO;
+                })
+                .toList();
+        modificar(pedidoDTOList);
     }
 }

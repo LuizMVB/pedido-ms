@@ -15,6 +15,6 @@ COPY /target/*.jar app.jar
 SHELL ["/bin/bash", "-c"]
 
 # Expose ports and define the command to run your Spring Boot app
-EXPOSE 8080
-EXPOSE 5005
+#EXPOSE 8080
+#EXPOSE 5005
 CMD java ${ADDITIONAL_OPTS} -jar app.jar --spring.profile.active=${PROFILE}
